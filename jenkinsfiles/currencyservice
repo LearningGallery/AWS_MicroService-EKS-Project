@@ -41,7 +41,7 @@ pipeline {
         }
         stage('Update Deployment file') {
             environment {
-                GIT_REPO_NAME = "Microservices-E-Commerce-eks-project"
+                GIT_REPO_NAME = "AWS_MicroService-EKS-Project"
                 GIT_EMAIL = "abutalha3005@gmail.com"
                 GIT_USER_NAME = "LearningGallery"
                 IMAGE_NAME = "currencyservice"
