@@ -6,7 +6,7 @@ provider "aws" {
 # IAM Role for EKS Cluster
 # ----------------------------
 resource "aws_iam_role" "master" {
-  name = "yaswanth-eks-master1"
+  name = "iam-learninggallery-eks-master1"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -39,7 +39,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEKSVPCResourceController" {
 # IAM Role for Worker Nodes
 # ----------------------------
 resource "aws_iam_role" "worker" {
-  name = "yaswanth-eks-worker1"
+  name = "iam-learninggallery-eks-worker1"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -54,7 +54,7 @@ resource "aws_iam_role" "worker" {
 }
 
 resource "aws_iam_policy" "autoscaler" {
-  name = "yaswanth-eks-autoscaler-policy1"
+  name = "as-learninggallery-eks-policy1"
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -105,7 +105,7 @@ resource "aws_iam_role_policy_attachment" "autoscaler" {
 
 resource "aws_iam_instance_profile" "worker" {
   depends_on = [aws_iam_role.worker]
-  name       = "yaswanth-eks-worker-profile1"
+  name       = "iam-learninggallery-eks-worker-profile1"
   role       = aws_iam_role.worker.name
 }
 
@@ -114,7 +114,7 @@ resource "aws_iam_instance_profile" "worker" {
 # ----------------------------
 data "aws_vpc" "main" {
   tags = {
-    Name = "Jumphost-vpc"
+    Name = "learninggallery"
   }
 }
 
@@ -122,7 +122,7 @@ data "aws_subnet" "subnet-1" {
   vpc_id = data.aws_vpc.main.id
   filter {
     name   = "tag:Name"
-    values = ["Public-Subnet-1"]
+    values = ["sb-learninggallery-ie-1"]
   }
 }
 
@@ -130,7 +130,7 @@ data "aws_subnet" "subnet-2" {
   vpc_id = data.aws_vpc.main.id
   filter {
     name   = "tag:Name"
-    values = ["Public-subnet2"]
+    values = ["sb-learninggallery-ie-2"]
   }
 }
 
@@ -138,7 +138,7 @@ data "aws_security_group" "selected" {
   vpc_id = data.aws_vpc.main.id
   filter {
     name   = "tag:Name"
-    values = ["Jumphost-sg"]
+    values = ["sg-learninggallery"]
   }
 }
 
@@ -146,7 +146,7 @@ data "aws_security_group" "selected" {
 # EKS Cluster
 # ----------------------------
 resource "aws_eks_cluster" "eks" {
-  name     = "project-eks"
+  name     = "learninggallery-eks"
   role_arn = aws_iam_role.master.arn
 
   vpc_config {
@@ -155,7 +155,7 @@ resource "aws_eks_cluster" "eks" {
   }
 
   tags = {
-    Name        = "yaswanth-eks-cluster"
+    Name        = "learninggallery-eks-cluster"
     Environment = "dev"
     Terraform   = "true"
   }
@@ -185,7 +185,7 @@ resource "aws_eks_node_group" "node-grp" {
   }
 
   tags = {
-    Name = "project-eks-node-group"
+    Name = "learninggallery-eks-node-group"
   }
 
   scaling_config {
