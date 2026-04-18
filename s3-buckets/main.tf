@@ -4,6 +4,7 @@ provider "aws" {
 
 resource "aws_s3_bucket" "bucket1" {
   bucket = "learninggallery01"
+  force_destroy = true
 
   tags = {
     Name        = "learninggallery"
@@ -20,6 +21,7 @@ resource "aws_s3_bucket_versioning" "bucket1_versioning" {
 
 resource "aws_s3_bucket" "bucket2" {
   bucket = "learninggallery02"
+  force_destroy = true
 
   tags = {
     Name        = "learninggallery"
